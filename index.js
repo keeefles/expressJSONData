@@ -1,4 +1,5 @@
 import express from 'express'
+import axios from 'axios'
 
 // express app
 const app = express()
@@ -15,21 +16,25 @@ app.use(
 )
 
 // / => home
-router.get('^/$|/ejd', (req, res)=> {
+// router.get('^/$|/ejd', (req, res)=> {
+//     res.json({
+//         status: res.statusCode,
+//         msg: "You are home."
+//     })
+// })
+
+// make use of either axios or fetch.
+// axios
+router.get('^/$|home', async (req, res)=> {
+    let response = await axios.get(dataUrl)
+    let {home} = await response.data
     res.json({
         status: res.statusCode,
-        msg: "You are home."
+        home
     })
 })
 
-// resume
-// router.get('/resume', async (req, res) => {
-//     let {resume} = await (await fetch(dataUrl)).json()
-//     res.json({
-//         status: res.statusCode,
-//         resume
-//     })
-// })
+// fetch
 router.get('/resume', async (req, res) => {
     let response = await fetch(dataUrl)
     let {resume} = await response.json()
@@ -38,20 +43,15 @@ router.get('/resume', async (req, res) => {
         resume
     })
 })
+
 router.get('/testimonials', async (req, res) => {
     let response = await fetch(dataUrl)
     let {testimonials} = await response.json()
+    let params = +req.params.id
+    let idx = params > 0 ? params - 1 : 0
     res.json({
         status: res.statusCode,
-        testimonials
-    })
-})
-router.get('/home', async (req, res) => {
-    let response = await fetch(dataUrl)
-    let {home} = await response.json()
-    res.json({
-        status: res.statusCode,
-        home
+        testimonials: testimonials[idx]
     })
 })
 router.get('/about', async (req, res) => {
@@ -79,6 +79,32 @@ router.get('/projects', async (req, res) => {
     })
 })
 
+router.post('/addResume', bodyParser.json(), async (req, res) => {
+    try {
+    let payload = req.body
+    let response = await axios.post(dataUrl, {
+            id: 5,
+            year: new Date().getFullYear(),
+            information: "idk bro",
+            place: "in my head"
+        })
+        res.json({
+            status: res.statusCode,
+            info: response.data
+        }
+    )}
+    catch(err) {
+        console.log("error");
+    }
+})
+
+router.patch('/updateResume', async (req, res) => {
+     
+})
+
+router.delete('/deleteResume', async (req, res) => {
+
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
