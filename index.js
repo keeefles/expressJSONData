@@ -23,13 +23,62 @@ router.get('^/$|/ejd', (req, res)=> {
 })
 
 // resume
+// router.get('/resume', async (req, res) => {
+//     let {resume} = await (await fetch(dataUrl)).json()
+//     res.json({
+//         status: res.statusCode,
+//         resume
+//     })
+// })
 router.get('/resume', async (req, res) => {
-    let {resume} = await (await fetch(dataUrl)).json()
+    let response = await fetch(dataUrl)
+    let {resume} = await response.json()
     res.json({
         status: res.statusCode,
         resume
     })
 })
+router.get('/testimonials', async (req, res) => {
+    let response = await fetch(dataUrl)
+    let {testimonials} = await response.json()
+    res.json({
+        status: res.statusCode,
+        testimonials
+    })
+})
+router.get('/home', async (req, res) => {
+    let response = await fetch(dataUrl)
+    let {home} = await response.json()
+    res.json({
+        status: res.statusCode,
+        home
+    })
+})
+router.get('/about', async (req, res) => {
+    let response = await fetch(dataUrl)
+    let {about} = await response.json()
+    res.json({
+        status: res.statusCode,
+        about
+    })
+})
+router.get('/skills', async (req, res) => {
+    let response = await fetch(dataUrl)
+    let {skills} = await response.json()
+    res.json({
+        status: res.statusCode,
+        skills
+    })
+})
+router.get('/projects', async (req, res) => {
+    let response = await fetch(dataUrl)
+    let {projects} = await response.json()
+    res.json({
+        status: res.statusCode,
+        projects
+    })
+})
+
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
